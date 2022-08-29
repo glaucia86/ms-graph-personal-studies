@@ -10,6 +10,9 @@ const express = require('express');
 const path = require('path');
 const cookieParser = require('cookie-parser');
 const logger = require('morgan');
+const session = require('express-session');
+const flash = require('connect-flash');
+const msal = require('@azure/msal-node');
 
 const indexRouter = require('./routes/index');
 const usersRouter = require('./routes/users');
@@ -25,6 +28,33 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
+
+app.use(
+  session({
+    secret: 'secret_value_here',
+    resave: false,
+    saveUninitialized: false,
+    unset: 'destroy',
+  })
+);
+
+// ==> Flash middleware (to show messages to the user)
+app.use(flash());
+
+app.use(function (req, res, next) {
+  res.locals.error = req.flash('error_msg');
+
+  const errors = req.flash('error');
+  for (const i in errors) {
+    res.locals.error.push({ message: 'An error occured', debug: errors[i] });
+  }
+
+  if (req.session.userId) {
+    res.locals.user = app.locals.users[req.session.userId];
+  }
+
+  next();
+});
 
 app.use('/', indexRouter);
 app.use('/users', usersRouter);
