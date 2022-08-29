@@ -1,2 +1,5 @@
-# ms-graph-personal-studies
-Personal Studies related with Microsoft Graph (365)
+# Microsoft Graph 365 Personal Studies
+
+Personal Studies related with Microsoft Graph 365 with JavaScript/TypeScript
+
+**under construction**
