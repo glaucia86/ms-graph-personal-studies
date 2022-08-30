@@ -13,11 +13,31 @@ const logger = require('morgan');
 const session = require('express-session');
 const flash = require('connect-flash');
 const msal = require('@azure/msal-node');
+require('dotenv').config();
 
 const indexRouter = require('./routes/index');
 const usersRouter = require('./routes/users');
 
 const app = express();
+
+const msalConfig = {
+  auth: {
+    clientId: process.env.OAUTH_APP_ID,
+    authority: process.env.OAUTH_AUTHORITY,
+    clientSecret: process.env.OAUTH_APP_SECRET,
+  },
+  system: {
+    loggerOption: {
+      loggerCallback(loglevel, message, containsPii) {
+        console.log(message);
+      },
+      piiLoggingEnabled: false,
+      logLevel: msal.LogLevel.Verbose,
+    },
+  },
+};
+
+app.locals.msalClient = new msal.ConfidentialClientApplication(msalConfig);
 
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));
