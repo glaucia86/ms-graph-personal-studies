@@ -20,6 +20,9 @@ const usersRouter = require('./routes/users');
 
 const app = express();
 
+// ==> Login implementation
+app.locals.users = { };
+
 const msalConfig = {
   auth: {
     clientId: process.env.OAUTH_APP_ID,
