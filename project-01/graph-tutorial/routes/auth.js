@@ -8,7 +8,6 @@
 const router = require('express-promise-router')();
 const graph = require('../graph');
 
-/* GET auth callback. */
 router.get('/signin', async function (req, res) {
   const urlParameters = {
     scopes: process.env.OAUTH_SCOPES.split(','),
@@ -42,12 +41,13 @@ router.get('/callback', async function (req, res) {
       tokenRequest
     );
 
-    // Save the user's homeAccountId in their session
     req.session.userId = response.account.homeAccountId;
 
-    const user = await graph.getUserDetails(response.accessToken);
+    const user = await graph.getUserDetails(
+      req.app.locals.msalClient,
+      req.session.userId
+    );
 
-    // Add the user to user storage
     req.app.locals.users[req.session.userId] = {
       displayName: user.displayName,
       email: user.mail || user.userPrincipalName,
@@ -64,9 +64,7 @@ router.get('/callback', async function (req, res) {
 });
 
 router.get('/signout', async function (req, res) {
-  // Sign out
   if (req.session.userId) {
-    // Look up the user's account in the cache
     const accounts = await req.app.locals.msalClient
       .getTokenCache()
       .getAllAccounts();
@@ -75,13 +73,11 @@ router.get('/signout', async function (req, res) {
       (a) => a.homeAccountId === req.session.userId
     );
 
-    // Remove the account
     if (userAccount) {
       req.app.locals.msalClient.getTokenCache().removeAccount(userAccount);
     }
   }
 
-  // Destroy the user's session
   req.session.destroy(function (err) {
     res.redirect('/');
   });

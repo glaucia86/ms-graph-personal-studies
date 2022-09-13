@@ -16,6 +16,7 @@ module.exports = {
       .api('/me')
       .select('displayName,mail,mailboxSettings,userPrincipalName')
       .get();
+
     return user;
   },
 };
@@ -31,27 +32,19 @@ function getAuthenticatedClient(msalClient, userId) {
 
   // Initialize Graph client
   const client = graph.Client.init({
-    // Implement an auth provider that gets a token
-    // from the app's MSAL instance
     authProvider: async (done) => {
       try {
-        // Get the user's account
         const account = await msalClient
           .getTokenCache()
           .getAccountByHomeId(userId);
 
         if (account) {
-          // Attempt to get the token silently
-          // This method uses the token cache and
-          // refreshes expired tokens as needed
           const response = await msalClient.acquireTokenSilent({
             scopes: process.env.OAUTH_SCOPES.split(','),
             redirectUri: process.env.OAUTH_REDIRECT_URI,
             account: account,
           });
 
-          // First param to callback is the error,
-          // Set to null in success case
           done(null, response.accessToken);
         }
       } catch (err) {
