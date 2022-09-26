@@ -59,7 +59,7 @@ async function postSubscriptionAsync() {
 
     const subscription = {
       changeType: 'created, updated',
-      notificationUrl: process.env.EVENT_HUB_NOTIFICATION_URL,
+      notificationUrl: process.env.EVENT_HUB_NOTIFICATION_URL_TEST,
       resource: 'users',
       expirationDateTime: _expiry,
       clientState: 'secretClientState',
