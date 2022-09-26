@@ -1,9 +1,13 @@
+/**
+ * file: SubscriptionFunction/index.js
+ * date: 09/26/2022
+ * description: file responsible for the subscription function.
+ * author: Glaucia Lemos <Twitter: @glaucia_lemos86>
+ */
+
+require('isomorphic-fetch');
+const graph = require('../shared/graph');
+
 module.exports = async function (context, myTimer) {
-    var timeStamp = new Date().toISOString();
-    
-    if (myTimer.isPastDue)
-    {
-        context.log('JavaScript is running late!');
-    }
-    context.log('JavaScript timer trigger function ran!', timeStamp);   
+  const subscription = await graph.postSubscriptionAsync();
 };
