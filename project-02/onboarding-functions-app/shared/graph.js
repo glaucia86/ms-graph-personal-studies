@@ -19,6 +19,7 @@ dotenv.config();
 let _clientSecretCredential = undefined;
 let _appClient = undefined;
 let _expiry = undefined;
+let _memberId = undefined;
 
 function ensureGraphForAppOnlyAuth() {
   try {
@@ -59,7 +60,7 @@ async function postSubscriptionAsync() {
 
     const subscription = {
       changeType: 'created, updated',
-      notificationUrl: process.env.EVENT_HUB_NOTIFICATION_URL_TEST,
+      notificationUrl: process.env.EVENT_HUB_NOTIFICATION_URL,
       resource: 'users',
       expirationDateTime: _expiry,
       clientState: 'secretClientState',

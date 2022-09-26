@@ -1,0 +1,14 @@
+{
+  "bindings": [
+    {
+      "type": "eventHubTrigger",
+      "name": "eventHubMessages",
+      "direction": "in",
+      "eventHubName": "event-hub",
+      "connection": "onboardingapp_eventhubonboardingpolicy_EVENTHUB",
+      "cardinality": "many",
+      "consumerGroup": "$Default",
+      "dataType": "string"
+    }
+  ]
+}
