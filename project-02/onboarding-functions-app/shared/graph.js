@@ -48,3 +48,28 @@ function ensureGraphForAppOnlyAuth() {
     return handleError(500, error);
   }
 }
+
+async function postSubscriptionAsync() {
+  try {
+    if (!_expiry) {
+      _expiry = await expiry.getDateTimeAsync();
+    }
+
+    const subscription = {
+      changeType: 'created, updated',
+      notificationUrl: process.env.EVENT_HUB_NOTIFICATION_URL,
+      resource: 'users',
+      expirationDateTime: _expiry,
+      clientState: 'secretClientState',
+    };
+
+    return _appClient?.api('/subscriptions').post(subscription);
+  } catch (error) {
+    console.log('Error to post Subscription Async: ', error);
+    return handleError(500, error);
+  }
+}
+
+module.exports = {
+  postSubscriptionAsync,
+};
