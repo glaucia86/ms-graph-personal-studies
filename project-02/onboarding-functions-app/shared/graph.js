@@ -73,6 +73,28 @@ async function postSubscriptionAsync() {
   }
 }
 
+async function postTeamsMemberAsync(memberId) {
+  ensureGraphForAppOnlyAuth();
+
+  try {
+    _memberId = memberId;
+    const user = `https://graph.microsoft.com/v1.0/users(\'${_memberId}\')`;
+    const conversationMember = {
+      '@odata.type': '#microsoft.graph.aadUserConversationMember',
+      roles: ['owner'],
+      'user@odata.bind': user,
+    };
+
+    return _appClient
+      ?.api('/teams/1a37857c3c0e09e5/members')
+      .post(conversationMember);
+  } catch (error) {
+    console.log('Error to post Teams Member: ', error);
+    return handleError(500, error);
+  }
+}
+
 module.exports = {
   postSubscriptionAsync,
+  postTeamsMemberAsync,
 };
