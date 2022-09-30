@@ -14,5 +14,8 @@
   "bugs": {
     "url": "https://github.com/MicrosoftDocs/mslearn-retrieve-m365-data-with-msgraph-quickstart/issues"
   },
-  "homepage": "https://github.com/MicrosoftDocs/mslearn-retrieve-m365-data-with-msgraph-quickstart#readme"
+  "homepage": "https://github.com/MicrosoftDocs/mslearn-retrieve-m365-data-with-msgraph-quickstart#readme",
+  "dependencies": {
+    "dotenv": "^16.0.3"
+  }
 }
