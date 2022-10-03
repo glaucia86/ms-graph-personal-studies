@@ -1,21 +1,19 @@
 /**
- * file: auth.js
+ * file: js/auth.js
  * date: 10/04/2022
  * description: file responsible for authenticating the user.
  * author: Glaucia Lemos <Twitter: @glaucia_lemos86>
  */
 
-const dotenv = require('dotenv');
-
-dotenv.config();
-
 const msalConfig = {
   auth: {
-    clientId: process.env.AAD_APP_CLIENT_ID,
-    authority: process.env.AAD_APP_DIRECTORY_ID_URL,
+    clientId: '5fd9cd77-4518-4ef4-a81d-dcf5ba1ad142',
+    authority:
+      'https://login.microsoftonline.com/a3d6bd18-e1a2-49ad-a4c5-bb627f453d95',
     redirectUri: 'http://localhost:8080',
   },
 };
+
 const msalRequest = { scopes: [] };
 function ensureScope(scope) {
   if (
