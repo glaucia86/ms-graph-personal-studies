@@ -19,3 +19,22 @@ async function displayUI() {
   var content = document.getElementById('content');
   content.style = 'display: block';
 }
+
+async function displayEmail() {
+  const emails = await getEmails();
+
+  if (!emails || emails.value.length < 1) {
+    return;
+  }
+
+  document.getElementById('displayEmail').style = 'display: none';
+
+  const emailsUl = document.getElementById('emails');
+  emails.value.forEach((email) => {
+    const emailListTag = document.createElement('li');
+    emailListTag.innerText = `${email.subject} (${new Date(
+      email.receivedDateTime
+    ).toLocaleString()})`;
+    emailsUl.appendChild(emailListTag);
+  });
+}
