@@ -22,13 +22,17 @@ async function getUser() {
   return await graphClient.api('/me').select('id,displayName').get();
 }
 
-async function getEmails() {
+async function getEmails(nextLink) {
   ensureScope('mail.read');
 
-  return await graphClient
-    .api('/me/messages')
-    .select('subject,receivedDateTime')
-    .orderby('receivedDateTime desc')
-    .top(10)
-    .get();
+  if (nextLink) {
+    return await graphClient.api(nextLink).get();
+  } else {
+    return await graphClient
+      .api('/me/messages')
+      .select('subject,receivedDateTime')
+      .orderby('receivedDateTime desc')
+      .top(10)
+      .get();
+  }
 }
