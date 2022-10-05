@@ -20,12 +20,16 @@ async function displayUI() {
   content.style = 'display: block';
 }
 
+let nextLink;
+
 async function displayEmail() {
-  const emails = await getEmails();
+  const emails = await getEmails(nextLink);
 
   if (!emails || emails.value.length < 1) {
     return;
   }
+
+  nextLink = emails['@odata.nextLink'];
 
   document.getElementById('displayEmail').style = 'display: none';
 
@@ -37,4 +41,10 @@ async function displayEmail() {
     ).toLocaleString()})`;
     emailsUl.appendChild(emailListTag);
   });
+
+  window.scrollTo({ top: emailsUl.scrollHeight, behavior: 'smooth' });
+
+  if (nextLink) {
+    document.getElementById('loadMoreContainer').style = 'display: block';
+  }
 }
